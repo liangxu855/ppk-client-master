@@ -1,0 +1,112 @@
+fastlane_version "2.92.0"
+
+default_platform :ios
+
+if git_branch == 'master'
+  APP_ID = 'com.mochongsoft.ppk'
+  # TEAM_ID = 'VPHFGLS3N9'
+  # PROVISION_PROFILE = 'fd1e3a87-3f65-4b88-bad1-0b122391c89d'
+  # PROVISION_PROFILE_SPECIFIER = 'match AppStore com.redcat.shandiangou'
+  # CODE_SIGN_IDENTITY = 'iPhone Distribution: Hangzhou Qiangqu Network Technology Co., Ltd. (VPHFGLS3N9)'
+else
+  APP_ID = 'com.mochongsoft.ppk'
+  # TEAM_ID = 'M5C32TNDL2'
+  # PROVISION_PROFILE = '75d2fb57-9b1e-4260-9cf7-a34d100989d1'
+  # PROVISION_PROFILE_SPECIFIER = 'match Development com.redcat.shandiangoudaily'
+  # CODE_SIGN_IDENTITY = 'iPhone Developer: Zehua Fu (522829DS6W)'
+end
+
+def config_project
+  update_APP_IDentifier(
+    plist_path: 'ppk_client/Info.plist',
+    app_identifier: APP_ID
+  )
+
+  # path = '../ppk_client.xcworkspace'
+  # project = Xcodeproj::Project.open path
+  # project.targets.each do |target|
+  #   if target.name == 'ppk_client'
+  #     target.build_configurations.each do |config|
+  #       config.build_settings['PROVISIONING_PROFILE'] = PROVISION_PROFILE
+  #       config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = PROVISION_PROFILE_SPECIFIER
+  #       config.build_settings['CODE_SIGN_IDENTITY'] = CODE_SIGN_IDENTITY
+  #       config.build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = CODE_SIGN_IDENTITY
+  #       config.build_settings['DEVELOPMENT_TEAM'] = TEAM_ID
+  #     end
+  #   end
+  # end
+  # project.save path
+end
+
+# def upload_ipa_and_dsym
+#   version = get_version_number
+#   filepath = "../build/#{version}.zip"
+#   sh "zip #{filepath} ../build/ppk_client.ipa ../build/ppk_client.app.dSYM.zip"
+#   ftp(
+#     host: 'file.51xianqu.net',
+#     username: 'xqftp',
+#     password: '998ecf84',
+#     upload: {
+#       src: "build/#{version}.zip",
+#       dest: "/ipa/#{version}.zip"
+#     }
+#   )
+# end
+
+before_all do
+  # ENV["SLACK_URL"] = "https://hooks.slack.com/services/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" 
+  # cocoapods
+end
+
+desc "Deploy a new version to the App Store"
+lane :release do
+  increment_build_number
+
+  match(type: "appstore", app_identifier: APP_ID, readonly: true)
+  gym
+  deliver(force: true)
+  # slack(message: "Successfully deployed new App Update.")
+  # upload_ipa_and_dsym
+  # slack(message: "Successfully upload ipa and dsym.")
+end
+
+desc "Submit for review"
+lane :submit do
+  deliver(skip_screenshots: true,
+          skip_metadata: false,
+          submit_for_review: false)
+end
+
+desc "git hook"
+lane :git_hook do
+  config_project
+end
+
+
+desc %{配置开发环境的的bundleid, teamid, provision_profile, code_sign_identify并下载相应的证书
+如果看到需要让你输入passphrase的话，重复两次输入shandiangou
+}
+lane :config_dev do
+  config_project
+  match(type: "development", app_identifier: APP_ID, readonly: true)
+end
+
+desc %{配置生产环境的的bundleid, teamid, provision_profile, code_sign_identify并下载相应的证书
+如果看到需要让你输入passphrase的话，重复两次输入shandiangou
+}
+lane :config_prod do
+  config_project
+  match(type: "appstore", app_identifier: APP_ID, readonly: true)
+end
+
+lane :add_device do
+  device_name = prompt(text: "Enter the device name: ")
+  device_udid = prompt(text: "Enter the device UDID: ")
+    device_hash = {}
+    device_hash[device_name] = device_udid
+    register_devices(
+      devices: device_hash
+    )
+  refresh_profiles
+end
+

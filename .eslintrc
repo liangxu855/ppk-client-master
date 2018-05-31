@@ -1,0 +1,27 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["react-app"],
+  "plugins": [
+    "react",
+    "react-native"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "jsx": true,
+    "modules": true
+  },
+  "rules": {
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 0,
+    "react-native/no-color-literals": 0,
+    "semi": 2,
+    "no-use-before-define": 0,
+    "react/prop-types": 0
+  }
+}

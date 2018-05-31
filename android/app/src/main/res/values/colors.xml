@@ -1,0 +1,6 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <!-- 解决植入splash-screen打开闪退的问题，原理不知道-->
+    <color name="primary_dark">#000000</color>
+</resources>

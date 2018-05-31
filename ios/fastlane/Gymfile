@@ -1,0 +1,4 @@
+workspace "ppk_client.xcworkspace"
+scheme "ppk_client"
+clean true
+output_directory "./build"

@@ -1,0 +1,53 @@
+{
+  "name": "ppk_client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
+    "bundle-android-pkg": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output release/android/index.android.bundle --assets-dest release/android",
+    "bundle-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output release/ios/main.jsbundle --assets-dest release/ios"
+  },
+  "dependencies": {
+    "immutability-helper": "^2.6.6",
+    "nachos-ui": "^0.1.2",
+    "react": "16.3.0-alpha.3",
+    "react-native": "0.54.4",
+    "react-native-animatable": "^1.2.4",
+    "react-native-charts-wrapper": "^0.4.3",
+    "react-native-code-push": "^5.3.2",
+    "react-native-ezswiper": "^1.2.2",
+    "react-native-fast-image": "^4.0.0",
+    "react-native-fetch-polyfill": "^1.1.2",
+    "react-native-qrcode-svg": "^5.0.6",
+    "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-spinkit": "^1.1.1",
+    "react-native-splash-screen": "^3.0.6",
+    "react-native-storage": "^0.2.2",
+    "react-native-svg": "^6.3.1",
+    "react-native-textinput-effects": "^0.4.2",
+    "react-native-vector-icons": "^4.5.0",
+    "react-native-view-shot": "^2.3.0",
+    "react-native-wechat": "^1.9.9",
+    "react-navigation": "^1.5.8"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react-native": "^3.2.1",
+    "jest": "22.4.3",
+    "react-test-renderer": "16.3.0-alpha.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
